@@ -1,11 +1,11 @@
 [
   {
     "listen": {
-      "domain": "0.0.0.0",
+      "host": "0.0.0.0",
       "port": "1234"
     },
-    "forward": {
-      "ip": "localhost",
+    "target": {
+      "host": "localhost",
       "port": "4000"
     }
   }

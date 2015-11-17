@@ -12,22 +12,22 @@ function updateJson(newProxies) {
 }
 
 router.get('/', (req, res, next) => {
-  res.send(proxies);
+  res.json(proxies);
 });
 
-router.get('/:domain', (req, res, next) => {
-  var domain = req.params.domain;
-  var data = proxies.filter(proxy => proxy.listen.domain === domain);
+router.get('/:host', (req, res, next) => {
+  var host = req.params.host;
+  var data = proxies.filter(proxy => proxy.listen.host === host);
 
   res.json(data);
 });
 
 router.post('/', (req, res, next) => {
-  var domain = req.body.listen.domain;
-  taken = proxies.filter(proxy => proxy.listen.domain === domain);
+  var host = req.body.listen.host;
+  taken = proxies.filter(proxy => proxy.listen.host === host);
 
   if (taken.length !== 0) {
-    res.json({ 'error': 'domain already taken' });
+    res.json({ 'error': 'host already taken' });
   } else {
     proxies.push(req.body);
 
@@ -37,15 +37,15 @@ router.post('/', (req, res, next) => {
   }
 });
 
-router.put('/:domain', (req, res, next) => {
-  var domain = req.params.domain;
-  taken = proxies.filter(proxy => proxy.listen.domain === domain);
+router.put('/:host', (req, res, next) => {
+  var host = req.params.host;
+  taken = proxies.filter(proxy => proxy.listen.host === host);
 
   if (taken.length === 0) {
-    res.json({ 'error': 'domain dose not exist' });
+    res.json({ 'error': 'host dose not exist' });
   } else {
     var newProxies = proxies.map(proxy => {
-      return (proxy.listen.domain == domain) ? req.body : proxy;
+      return (proxy.listen.host == host) ? req.body : proxy;
     });
 
     updateJson(newProxies)
@@ -54,14 +54,14 @@ router.put('/:domain', (req, res, next) => {
   }
 });
 
-router.delete('/:domain', (req, res, next) => {
-  var domain = req.params.domain;
-  taken = proxies.filter(proxy => proxy.listen.domain === domain);
+router.delete('/:host', (req, res, next) => {
+  var host = req.params.host;
+  taken = proxies.filter(proxy => proxy.listen.host === host);
 
   if (taken.length === 0) {
-    res.json({ 'error': 'domain dose not exist' });
+    res.json({ 'error': 'host dose not exist' });
   } else {
-    var newProxies = proxies.filter(proxy => proxy.listen.domain !== domain);
+    var newProxies = proxies.filter(proxy => proxy.listen.host !== host);
 
     updateJson(newProxies)
       .then(() => res.json({ 'message': 'delete proxy success'}))
