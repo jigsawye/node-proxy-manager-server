@@ -1,0 +1,9 @@
+{
+    "name"        : "proxy-api",
+    "script"      : "./bin/www",
+    "watch"       : true,
+    "env": {
+        "NODE_ENV": "dev",
+        "PORT": 3000,
+    }
+}
