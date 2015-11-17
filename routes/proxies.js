@@ -1,15 +1,9 @@
 var express = require('express');
 var router = express.Router();
-var proxies = require('../data/proxies');
-var jsonfile = require('jsonfile')
 
-function updateJson(newProxies) {
-  return new Promise((resolve, reject) => {
-    jsonfile.writeFile('./data/proxies.json', newProxies, { spaces: 2 }, err => {
-      (err === null) ? resolve() : reject(err);
-    });
-  });
-}
+var proxies = require('../data/proxies');
+var startOrRestartProxyServer = require('../utils/run-proxy');
+var updateJson = require('../utils/updateJson');
 
 router.get('/', (req, res, next) => {
   res.json(proxies);
@@ -32,7 +26,10 @@ router.post('/', (req, res, next) => {
     proxies.push(req.body);
 
     updateJson(proxies)
-      .then(() => res.json({ 'message': 'create proxy success'}))
+      .then(() => {
+        startOrRestartProxyServer();
+        res.json({ 'message': 'create proxy success'})
+      })
       .catch(err => res.json({ 'error': 'create proxy fail'}));
   }
 });
@@ -49,7 +46,10 @@ router.put('/:host', (req, res, next) => {
     });
 
     updateJson(newProxies)
-      .then(() => res.json({ 'message': 'update proxy success'}))
+      .then(() => {
+        startOrRestartProxyServer();
+        res.json({ 'message': 'update proxy success'})
+      })
       .catch(err => res.json({ 'error': 'update proxy fail'}));
   }
 });
@@ -64,7 +64,10 @@ router.delete('/:host', (req, res, next) => {
     var newProxies = proxies.filter(proxy => proxy.listen.host !== host);
 
     updateJson(newProxies)
-      .then(() => res.json({ 'message': 'delete proxy success'}))
+      .then(() => {
+        startOrRestartProxyServer();
+        res.json({ 'message': 'delete proxy success'});
+      })
       .catch(err => res.json({ 'error': 'delete proxy fail'}));
   }
 });
