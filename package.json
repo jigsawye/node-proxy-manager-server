@@ -1,5 +1,5 @@
 {
-  "name": "node-proxy-proxy-manager",
+  "name": "node-proxy-manager-server",
   "version": "0.0.1",
   "description": "The api server for proxy manager.",
   "main": "lib/index.js",
