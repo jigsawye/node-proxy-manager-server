@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var jwt = require('express-jwt');
 var unless = require('express-unless');
+var cors = require('cors');
 
 var auth = require('./routes/auth');
 var proxies = require('./routes/proxies');
@@ -19,6 +20,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(jwt({ secret: config.key }).unless({path: ['/auth/login']}));
+app.use(cors());
 
 app.use('/auth', auth);
 app.use('/proxies', proxies);

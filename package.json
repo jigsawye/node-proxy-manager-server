@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "license": "MIT",
   "repository": "jigsawye/node-proxy-manager-server",
-    "author": {
+  "author": {
     "name": "Jigsaw Ye",
     "email": "jigsaw.ye@gmail.com",
     "url": "github.com/jigsawye/node-proxy-manager-server"
@@ -18,6 +18,7 @@
   "dependencies": {
     "body-parser": "~1.13.2",
     "cookie-parser": "~1.3.5",
+    "cors": "^2.7.1",
     "debug": "~2.2.0",
     "express": "~4.13.1",
     "express-jwt": "^3.3.0",
