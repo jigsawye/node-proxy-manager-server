@@ -5,13 +5,17 @@ var proxies = require('../data/proxies');
 var startOrRestartProxyServer = require('../utils/run-proxy');
 var updateJson = require('../utils/updateJson');
 
+function createId() {
+  return Math.random().toString(36).substr(2, 6).toUpperCase();
+}
+
 router.get('/', (req, res, next) => {
   res.json(proxies);
 });
 
-router.get('/:host', (req, res, next) => {
-  var host = req.params.host;
-  var data = proxies.filter(proxy => proxy.listen.host === host);
+router.get('/:id', (req, res, next) => {
+  var id = req.params.id;
+  var data = proxies.filter(proxy => proxy.id === id);
 
   res.json(data);
 });
@@ -23,7 +27,7 @@ router.post('/', (req, res, next) => {
   if (taken.length !== 0) {
     res.json({ 'error': 'host already taken' });
   } else {
-    proxies.push(req.body);
+    proxies.push(Object.assign({}, req.body, { id: createId() }));
 
     updateJson(proxies)
       .then(() => {
@@ -34,15 +38,17 @@ router.post('/', (req, res, next) => {
   }
 });
 
-router.put('/:host', (req, res, next) => {
-  var host = req.params.host;
-  taken = proxies.filter(proxy => proxy.listen.host === host);
+router.put('/:id', (req, res, next) => {
+  var id = req.params.id;
+  taken = proxies.filter(proxy => proxy.id === id);
 
   if (taken.length === 0) {
-    res.json({ 'error': 'host dose not exist' });
+    res.json({ 'error': 'id dose not exist' });
   } else {
     var newProxies = proxies.map(proxy => {
-      return (proxy.listen.host == host) ? req.body : proxy;
+      return (proxy.id == id)
+        ? Object.assign({}, req.body, { id })
+        : proxy;
     });
 
     updateJson(newProxies)
@@ -54,14 +60,14 @@ router.put('/:host', (req, res, next) => {
   }
 });
 
-router.delete('/:host', (req, res, next) => {
-  var host = req.params.host;
-  taken = proxies.filter(proxy => proxy.listen.host === host);
+router.delete('/:id', (req, res, next) => {
+  var id = req.params.id;
+  taken = proxies.filter(proxy => proxy.id === id);
 
   if (taken.length === 0) {
-    res.json({ 'error': 'host dose not exist' });
+    res.json({ 'error': 'id dose not exist' });
   } else {
-    var newProxies = proxies.filter(proxy => proxy.listen.host !== host);
+    var newProxies = proxies.filter(proxy => proxy.id !== id);
 
     updateJson(newProxies)
       .then(() => {
