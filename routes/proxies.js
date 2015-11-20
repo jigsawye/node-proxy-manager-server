@@ -64,7 +64,7 @@ router.delete('/:id', (req, res, next) => {
   var id = req.params.id;
   taken = proxies.filter(proxy => proxy.id === id);
 
-  if (taken.length === 0) {
+  if (taken.length !== 0) {
     res.json({ 'error': 'id dose not exist' });
   } else {
     var newProxies = proxies.filter(proxy => proxy.id !== id);
