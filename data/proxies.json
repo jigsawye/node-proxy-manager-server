@@ -9,5 +9,16 @@
       "port": "4000"
     },
     "id": "E09VSB"
+  },
+  {
+    "listen": {
+      "host": "localhost",
+      "port": "7777"
+    },
+    "target": {
+      "host": "210.59.230.60",
+      "port": "80"
+    },
+    "id": "V166MB"
   }
 ]

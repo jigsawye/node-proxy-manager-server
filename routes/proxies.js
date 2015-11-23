@@ -17,7 +17,7 @@ router.get('/:id', (req, res, next) => {
   var id = req.params.id;
   var data = proxies.filter(proxy => proxy.id === id);
 
-  res.json(data);
+  res.json(data[0]);
 });
 
 router.post('/', (req, res, next) => {
