@@ -4,6 +4,7 @@
       "name"        : "proxy-api",
       "script"      : "./bin/www",
       "watch"       : true,
+      "ignore_watch": "data/proxies.json",
       "env": {
         "NODE_ENV": "dev",
         "PORT": 3000,
