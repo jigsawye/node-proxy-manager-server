@@ -17,7 +17,11 @@ router.get('/:id', (req, res, next) => {
   var id = req.params.id;
   var data = proxies.filter(proxy => proxy.id === id);
 
-  res.json(data[0]);
+  if (data.length === 0) {
+    res.status(500).json({ 'error': 'proxy is not exist' });
+  } else {
+    res.json(data[0]);
+  }
 });
 
 router.post('/', (req, res, next) => {
@@ -25,7 +29,7 @@ router.post('/', (req, res, next) => {
   taken = proxies.filter(proxy => proxy.listen.host === host);
 
   if (taken.length !== 0) {
-    res.json({ 'error': 'host already taken' });
+    res.status(500).json({ 'error': 'host already taken' });
   } else {
     proxies.push(Object.assign({}, req.body, { id: createId() }));
 
@@ -34,7 +38,7 @@ router.post('/', (req, res, next) => {
         startOrRestartProxyServer();
         res.json({ 'message': 'create proxy success'})
       })
-      .catch(err => res.json({ 'error': 'create proxy fail'}));
+      .catch(err => res.status(500).json({ 'error': 'create proxy fail'}));
   }
 });
 
@@ -43,7 +47,7 @@ router.put('/:id', (req, res, next) => {
   taken = proxies.filter(proxy => proxy.id === id);
 
   if (taken.length === 0) {
-    res.json({ 'error': 'id dose not exist' });
+    res.status(500).json({ 'error': 'id dose not exist' });
   } else {
     var newProxies = proxies.map(proxy => {
       return (proxy.id == id)
@@ -56,7 +60,7 @@ router.put('/:id', (req, res, next) => {
         startOrRestartProxyServer();
         res.json({ 'message': 'update proxy success'})
       })
-      .catch(err => res.json({ 'error': 'update proxy fail'}));
+      .catch(err => res.status(500).json({ 'error': 'update proxy fail'}));
   }
 });
 
@@ -65,7 +69,7 @@ router.delete('/:id', (req, res, next) => {
   taken = proxies.filter(proxy => proxy.id === id);
 
   if (taken.length !== 0) {
-    res.json({ 'error': 'id dose not exist' });
+    res.status(500).json({ 'error': 'id dose not exist' });
   } else {
     var newProxies = proxies.filter(proxy => proxy.id !== id);
 
@@ -74,7 +78,7 @@ router.delete('/:id', (req, res, next) => {
         startOrRestartProxyServer();
         res.json({ 'message': 'delete proxy success'});
       })
-      .catch(err => res.json({ 'error': 'delete proxy fail'}));
+      .catch(err => res.status(500).json({ 'error': 'delete proxy fail'}));
   }
 });
 
