@@ -29,8 +29,7 @@ ProxyEntity.prototype.find = function(id) {
 ProxyEntity.prototype.create = function(data) {
   return new Promise((resolve, reject) => {
     var taken = this.proxies.filter(proxy => {
-      return ((proxy.listen.host === data.listen.host)
-        && (proxy.listen.port === data.listen.port));
+      return (proxy.listen.host === data.listen.host);
     });
 
     if (taken.length !== 0) {
