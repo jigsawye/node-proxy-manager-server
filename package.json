@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "body-parser": "~1.13.2",
+    "connect": "^3.4.0",
     "cookie-parser": "~1.3.5",
     "cors": "^2.7.1",
     "debug": "~2.2.0",
@@ -29,7 +30,8 @@
     "jsonwebtoken": "^5.4.1",
     "morgan": "~1.6.1",
     "pm2": "^0.15.10",
-    "serve-favicon": "~2.3.0"
+    "serve-favicon": "~2.3.0",
+    "vhost": "^3.0.2"
   },
   "devDependencies": {
     "chai": "^3.4.1",

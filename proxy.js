@@ -1,11 +1,17 @@
 var http = require('http');
 var httpProxy = require('http-proxy');
+var connect = require('connect');
+var vhost = require('vhost');
 var proxies = require('./data/proxies');
 
+var app = connect();
+
 proxies.forEach(proxy => {
-  http.createServer((req, res) => {
-    httpProxy.createServer().web(req, res, {target: proxy.target });
-  }).listen(proxy.listen.port, proxy.listen.host, () => {
-    console.log(`Proxy ${proxy.listen.host}:${proxy.listen.port} => ${proxy.target.host}:${proxy.target.port}`)
-  });
+  app.use(vhost(proxy.listen.host, (req, res) => {
+    httpProxy.createServer().web(req, res, {
+      target: proxy.target
+    });
+  }));
 });
+
+app.listen(80);
