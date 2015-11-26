@@ -3,6 +3,7 @@ var httpProxy = require('http-proxy');
 var connect = require('connect');
 var vhost = require('vhost');
 var proxies = require('./data/proxies');
+var config = require('./config');
 
 var app = connect();
 
@@ -14,4 +15,4 @@ proxies.forEach(proxy => {
   }));
 });
 
-app.listen(80);
+app.listen(config.port);
