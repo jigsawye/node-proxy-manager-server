@@ -15,4 +15,4 @@ proxies.forEach(proxy => {
   }));
 });
 
-app.listen(config.port);
+app.listen(config.port.proxy);
